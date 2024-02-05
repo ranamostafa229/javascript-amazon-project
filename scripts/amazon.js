@@ -1,3 +1,5 @@
+import { cart } from "../data/cart.js";
+
 let productHTML = ""; // Accumulator pattern
 products.forEach((product) => {
   productHTML += `
@@ -93,7 +95,7 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
       `.js-added-to-cart-${productId}`
     );
     addedToCart.classList.add("added-to-cart_visible");
-
+    // add refreshed timeout function
     setTimeout(() => {
       const previousTimeoutId = addedMessageTimeouts[productId];
       if (previousTimeoutId) {
