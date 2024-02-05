@@ -1,7 +1,9 @@
 import { cart, addToCart } from "../data/cart.js";
+// (1) Save the data
 import { products } from "../data/products.js";
 
 let productHTML = ""; // Accumulator pattern
+// (2) Generate the HTML
 products.forEach((product) => {
   productHTML += `
         <div class="product-container">
