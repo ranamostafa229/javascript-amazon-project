@@ -77,7 +77,7 @@ const addedMessageTimeouts = {};
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const { productId } = button.dataset;
-
+    // (3) make it interactive
     addToCart(productId);
     updateCartQunatity();
 
