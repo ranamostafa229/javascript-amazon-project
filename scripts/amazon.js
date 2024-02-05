@@ -1,4 +1,4 @@
-import { cart } from "../data/cart.js";
+import { cart, addToCart } from "../data/cart.js";
 import { products } from "../data/products.js";
 
 let productHTML = ""; // Accumulator pattern
@@ -58,40 +58,26 @@ products.forEach((product) => {
     `;
 });
 
+function updateCartQunatity() {
+  let cartQuantity = 0;
+
+  cart.forEach((item) => {
+    cartQuantity = cartQuantity + item.quantity;
+  });
+
+  document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+}
+
 document.querySelector(".js-products-grid").innerHTML = productHTML;
 const addedMessageTimeouts = {};
+
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const { productId } = button.dataset;
-    let matchingItem;
 
-    const quantitySelector = document.querySelector(
-      `.js-quantity-selector-${productId}`
-    );
+    addToCart(productId);
+    updateCartQunatity();
 
-    const quantity = Number(quantitySelector.value);
-
-    cart.forEach((item) => {
-      if (productId === item.productId) {
-        matchingItem = item;
-      }
-    });
-    if (matchingItem) {
-      matchingItem.quantity += quantity;
-    } else {
-      cart.push({
-        productId,
-        quantity,
-      });
-    }
-
-    let cartQuantity = 0;
-
-    cart.forEach((item) => {
-      cartQuantity = cartQuantity + item.quantity;
-    });
-
-    document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
     const addedToCart = document.querySelector(
       `.js-added-to-cart-${productId}`
     );
