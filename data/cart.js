@@ -50,3 +50,39 @@ export function removeFromCart(productId) {
   cart = newCart;
   saveToStorage();
 }
+
+export function calculateCartQunatity() {
+  let cartQuantity = 0;
+
+  cart.forEach((item) => {
+    cartQuantity = cartQuantity + item.quantity;
+  });
+
+  const homeCartQuantity = document.querySelector(".js-cart-quantity");
+  if (homeCartQuantity) {
+    homeCartQuantity.innerHTML = cartQuantity;
+  }
+  const checkoutQuantity = document.querySelector(".js-checkout-header");
+  if (checkoutQuantity) {
+    checkoutQuantity.innerHTML = `(${cartQuantity}) Items`;
+  }
+  // const quantityLabel = document.querySelector(".js-quantity-label");
+  // if (quantityLabel) {
+  //   quantityLabel.innerHTML = cartQuantity;
+  // }
+}
+
+export function updateQuantity(productId, newQuantity) {
+  let matchingItem;
+  cart.forEach((cartItem) => {
+    if (cartItem.productId === productId) {
+      matchingItem = cartItem;
+    }
+  });
+  // if (newQuantity <= 0) {
+  //   removeFromCart(productId);
+  // }
+  matchingItem.quantity = newQuantity;
+  saveToStorage();
+  // calculateCartQunatity();
+}
