@@ -12,6 +12,7 @@ import {
   deliveryOptions,
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
+import { renderPaymentSummary } from "./paymentSummary.js";
 
 export function renderOrderSummary() {
   // combine all HTML togrther
@@ -134,6 +135,8 @@ export function renderOrderSummary() {
       container.remove();
       // when the remove item update cart quantity
       calculateCartQunatity();
+      // when delete item update payment summary
+      renderPaymentSummary();
     });
   });
 
@@ -182,6 +185,8 @@ export function renderOrderSummary() {
       const { productId, deliveryOptionId } = element.dataset;
       updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
+      // when change delivery option update payment summary
+      renderPaymentSummary();
     });
   });
 }
