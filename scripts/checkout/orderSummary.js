@@ -149,7 +149,6 @@ export function renderOrderSummary() {
         `.js-cart-item-container-${productId}`
       );
       cartContainer.classList.add("is-editing-quantity");
-      // calculateCartQunatity();
     });
   });
 
