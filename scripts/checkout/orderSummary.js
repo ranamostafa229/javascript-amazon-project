@@ -9,13 +9,16 @@ import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../utils/money.js";
 import dayjs from "https://unpkg.com/dayjs@1.11.10/esm/index.js";
 import {
+  calculateDeliveryDate,
   deliveryOptions,
   getDeliveryOption,
 } from "../../data/deliveryOptions.js";
 import { renderPaymentSummary } from "./paymentSummary.js";
+import isSatSun from "../utils/day.js";
+import { renderCheckoutHeader } from "./checkoutHeader.js";
 
 export function renderOrderSummary() {
-  // combine all HTML togrther
+  // combine all HTML together
   let cartSummaryHtml = "";
 
   // (2) Generate the HTML
@@ -25,10 +28,7 @@ export function renderOrderSummary() {
 
     const matchingProduct = getProduct(productId);
     const deliveryOption = getDeliveryOption(deliveryOptionId);
-
-    const today = dayjs();
-    const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
-    const dayString = deliveryDate.format("dddd, MMMM D");
+    const dayString = calculateDeliveryDate(deliveryOption);
 
     cartSummaryHtml += `
       <div class="cart-item-container js-cart-item-container-${
@@ -129,14 +129,21 @@ export function renderOrderSummary() {
     link.addEventListener("click", () => {
       const productId = link.dataset.productId;
       removeFromCart(productId);
-      const container = document.querySelector(
-        `.js-cart-item-container-${productId}`
-      );
-      container.remove();
+
+      // remove the cart item
+      // By using DOM
+      /* const container = document.querySelector(
+         `.js-cart-item-container-${productId}`
+       );
+       container.remove();
+      */
+      // [OR] By Regenrate the html for the order summary
+      renderOrderSummary();
       // when the remove item update cart quantity
       calculateCartQunatity();
       // when delete item update payment summary
       renderPaymentSummary();
+      renderCheckoutHeader();
     });
   });
 
@@ -172,7 +179,10 @@ export function renderOrderSummary() {
         `.js-quantity-label-${productId}`
       );
       quantityLabel.innerHTML = newQuantity;
-      calculateCartQunatity();
+      // calculateCartQunatity();
+      renderOrderSummary();
+      renderPaymentSummary();
+      renderCheckoutHeader();
       cartContainer.classList.remove("is-editing-quantity");
     });
   });
@@ -188,4 +198,24 @@ export function renderOrderSummary() {
       renderPaymentSummary();
     });
   });
+
+  //
+  let day = dayjs();
+  const dayafter = day.add(5, "days");
+  const dayString = dayafter.format("MMMM D");
+  console.log(dayString);
+
+  const monthafter = day.add(1, "months");
+  const monthString = monthafter.format("MMMM D");
+  console.log(monthString);
+
+  const monthbefore = day.subtract(1, "months");
+  const monthbeforeString = monthbefore.format("MMMM D");
+  console.log(monthbeforeString);
+
+  const date = day.format("dddd");
+  console.log(date);
+
+  console.log(isSatSun(day));
+  // document.querySelector(".js-delivery-date").innerHTML = dayString;
 }

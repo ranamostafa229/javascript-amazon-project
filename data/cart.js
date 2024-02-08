@@ -65,10 +65,11 @@ export function calculateCartQunatity() {
   if (homeCartQuantity) {
     homeCartQuantity.innerHTML = cartQuantity;
   }
-  const checkoutQuantity = document.querySelector(".js-checkout-header");
-  if (checkoutQuantity) {
-    checkoutQuantity.innerHTML = `(${cartQuantity}) Items`;
-  }
+  // const checkoutQuantity = document.querySelector(".js-checkout-header");
+  // if (checkoutQuantity) {
+  //   checkoutQuantity.innerHTML = `(${cartQuantity}) Items`;
+  // }
+  return cartQuantity;
 }
 
 export function updateQuantity(productId, newQuantity) {
